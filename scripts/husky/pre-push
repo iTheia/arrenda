@@ -1,0 +1,12 @@
+#!/bin/sh
+CURRENT_DATE=$(date '+%Y.%m.%d.%H.%M.%S')
+echo
+if [ -e .commit ]
+    then
+    git tag -a -m $CURRENT_DATE $CURRENT_DATE
+    rm .commit
+    npm run commit-log
+    git add commit-log.txt
+    git commit --amend -C HEAD --no-verify
+fi
+exit
