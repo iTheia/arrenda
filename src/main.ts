@@ -15,6 +15,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api-docs', app, document);
 
+  app.setGlobalPrefix('api/v1', {
+    exclude: ['version', 'api-docs', 'health-check'],
+  });
+
   app.use(cookieParser());
   app.enableCors(config.get('cors'));
 
