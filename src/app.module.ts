@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import config, { validationSchema } from './config';
+import { AdditionalModulesModule } from './modules/additional-modules/additional-modules.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import config, { validationSchema } from './config';
       isGlobal: true,
       validationSchema,
     }),
+    AdditionalModulesModule,
   ],
 })
 export class AppModule {}
