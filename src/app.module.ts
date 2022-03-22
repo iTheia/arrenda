@@ -7,6 +7,7 @@ import { CharacterModule } from './modules/character/character.module';
 import { LocationModule } from './modules/location/location.module';
 import { FilesModule } from './modules/files/files.module';
 import { LoginModule } from './modules/login/login.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
 
 @Module({
   imports: [
@@ -18,6 +19,10 @@ import { LoginModule } from './modules/login/login.module';
       load: config,
       isGlobal: true,
       validationSchema,
+    }),
+    ServeStaticModule.forRootAsync({
+      useFactory: (config: ConfigService) => config.get('static'),
+      inject: [ConfigService],
     }),
     AdditionalModulesModule,
     CharacterModule,
