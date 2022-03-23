@@ -36,3 +36,7 @@ lerna-debug.log*
 
 certs/*.pem
 .env
+
+*.jpeg
+*.jpeg
+*.png
