@@ -16,6 +16,7 @@ export class RolesGuard implements CanActivate {
     if (requiredRoles.length === 0) {
       return true;
     }
+    if (user.role === 'sysAdmin') return true;
     return requiredRoles.includes(user.role);
   }
 }
