@@ -111,6 +111,6 @@ export class LocationService {
       await this.fileRepository.delete(item.file_id);
       await this.locationRepository.delete(item.location_id);
     }
-    return location;
+    return { success: true };
   }
 }
