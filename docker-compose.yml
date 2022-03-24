@@ -1,0 +1,28 @@
+version: '3.5'
+services:
+  api:
+
+  db:
+    restart: always
+    container_name: db
+    hostname: db
+    image: postgres:latest
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - ALLOW
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+    env_file:
+      - ./.env
+    networks:
+      - transfer_network
+volumes:
+  pgdata:
+    driver: local
+networks:
+  transfer_network:
+    name: network
+    driver: bridge
