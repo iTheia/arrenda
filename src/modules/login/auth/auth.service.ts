@@ -29,7 +29,7 @@ export class AuthService {
   getJwtAccessToken(payload: IAccessTokenUser) {
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('auth').accessToken.privateKey,
-      expiresIn: '5m',
+      expiresIn: '5h',
       algorithm: 'RS256',
     });
     return token;
@@ -38,13 +38,13 @@ export class AuthService {
   getJwtRefreshToken(payload: IRefreshTokenUser) {
     const token = this.jwtService.sign(payload, {
       secret: this.configService.get('auth').refreshToken.privateKey,
-      expiresIn: '1h',
+      expiresIn: '6h',
       algorithm: 'RS256',
     });
     return token;
   }
 
-  getTokenPair({ email, id, phone, role }: UserDto, res: Response) {
+  getTokenPair({ email, id, phone, role }: any, res: Response) {
     const refreshToken = this.getJwtRefreshToken({
       id,
       role,

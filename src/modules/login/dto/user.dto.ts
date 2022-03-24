@@ -5,5 +5,4 @@ export class UserDto {
   phone: string | null;
   email: string | null;
   role: roles;
-  verified: boolean;
 }

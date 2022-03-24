@@ -1,3 +1,5 @@
+import { Auth } from '@middlewares/decoratos/auth.decorator';
+import { Role } from '@modules/login/types';
 import {
   Controller,
   Get,
@@ -6,7 +8,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  DefaultValuePipe,
+  ParseIntPipe,
+  Res,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { CharacterService } from './character.service';
 import { CreateCharacterDto, UpdateCharacterDto } from './dto';
 
@@ -14,28 +21,42 @@ import { CreateCharacterDto, UpdateCharacterDto } from './dto';
 export class CharacterController {
   constructor(private readonly characterService: CharacterService) {}
 
+  @Auth(Role.admin)
   @Post()
-  create(@Body() dto: CreateCharacterDto) {
-    return this.characterService.create(dto);
+  async create(@Body() dto: CreateCharacterDto) {
+    return await this.characterService.create(dto);
   }
 
+  @Auth()
   @Get()
-  findAll() {
-    return this.characterService.findAll();
+  async findAll(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number = 1,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number = 10,
+  ) {
+    return await this.characterService.findAll({
+      limit,
+      page,
+    });
   }
 
+  @Auth()
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.characterService.findOne(+id);
+  async findOne(
+    @Param('id') id: string,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    return await this.characterService.findOne(+id, res);
   }
 
+  @Auth(Role.sysAdmin)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateCharacterDto) {
+  async update(@Param('id') id: string, @Body() dto: UpdateCharacterDto) {
     return this.characterService.update(+id, dto);
   }
 
+  @Auth(Role.sysAdmin)
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     return this.characterService.remove(+id);
   }
 }

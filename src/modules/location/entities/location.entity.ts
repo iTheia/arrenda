@@ -1,14 +1,15 @@
+import { Character } from '@modules/character/entities';
 import { File } from '@modules/files/entities';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { LocationFile } from './location-file.entity';
 
 @Entity('location')
 export class Location extends BaseEntity {
@@ -25,14 +26,13 @@ export class Location extends BaseEntity {
   };
 
   @Column()
-  sector: number;
+  sector: string;
 
-  @Column()
-  picture_id: number;
+  @OneToMany(() => Character, (character) => character.location)
+  characters: Character[];
 
-  @ManyToOne(() => File, (file) => file.locations)
-  @JoinColumn({ name: 'picture_id' })
-  picture: File;
+  @OneToMany(() => LocationFile, (file) => file.location)
+  pictures: LocationFile[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

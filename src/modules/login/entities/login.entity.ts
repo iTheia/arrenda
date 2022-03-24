@@ -25,11 +25,8 @@ export class Login extends BaseEntity {
   @Column({ nullable: false })
   password: string;
 
-  @Column({ default: 'basic' })
+  @Column({ default: 'sysAdmin' })
   role: roles;
-
-  @Column({ default: false })
-  verified: boolean;
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;

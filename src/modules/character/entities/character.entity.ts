@@ -1,10 +1,11 @@
+import { Location } from '@modules/location/entities';
 import {
   BaseEntity,
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
+  JoinColumn,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,7 +19,7 @@ export class Character extends BaseEntity {
   name: string;
 
   @Column()
-  home_planet: number;
+  location_id: number;
 
   @Column()
   age: number;
@@ -26,9 +27,12 @@ export class Character extends BaseEntity {
   @Column()
   species: string;
 
-  @ManyToMany(() => Location)
-  @JoinTable()
-  locations: Location[];
+  @ManyToOne(() => Location, (location) => location.characters, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
+  @JoinColumn({ name: 'location_id' })
+  location: Location[];
 
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
