@@ -1,15 +1,32 @@
 version: '3.5'
 services:
   api:
+    container_name: arrenda-api
+    image: nestjs-api-dev:1.0.0
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    command: npm run start:debug
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - arrenda-network
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    restart: unless-stopped
+    depends_on:
+      - arrenda-db
 
-  db:
+  arrenda-db:
     restart: always
-    container_name: db
-    hostname: db
+    container_name: arrenda-db
+    hostname: arrenda-db
     image: postgres:latest
     environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=${DB_USER}
+      - POSTGRES_USER=${DB_PASS}
       - ALLOW
     ports:
       - '5432:5432'
@@ -18,11 +35,11 @@ services:
     env_file:
       - ./.env
     networks:
-      - transfer_network
+      - arrenda-network
 volumes:
   pgdata:
     driver: local
 networks:
-  transfer_network:
+  arrenda-network:
     name: network
     driver: bridge

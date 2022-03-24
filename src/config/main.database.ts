@@ -18,5 +18,10 @@ export default registerAs(
     type: 'postgres',
     ssl: false,
     autoLoadEntities: true,
+    entities: ['dist/**/*.entity.js'],
+    migrations: ['src/db/migration/*.ts'],
+    cli: {
+      migrationsDir: 'src/db/migration',
+    },
   }),
 );
